@@ -1,44 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-type PillarId = "price" | "fees" | "care";
-
-const PILLARS: {
-  id: PillarId;
-  index: string;
-  title: string;
-  description: string;
-  emphasis: string;
-}[] = [
-  {
-    id: "price",
-    index: "01",
-    title: "Low Price Guarantee",
-    description:
-      "If you find another clinic that is equal to ours for a better price, we will beat their price by 25%.",
-    emphasis: "25% Price Guarantee",
-  },
-  {
-    id: "fees",
-    index: "02",
-    title: "No Hidden Fees",
-    description:
-      "Our pricing is all-inclusive, covering everything you need, including lab testing, medications, physicals, and doctor consultations — no surprises, ever.",
-    emphasis: "No Hidden Costs",
-  },
-  {
-    id: "care",
-    index: "03",
-    title: "Personalized Medical Care",
-    description:
-      "Our programs are customized to your individual needs and supported by licensed medical supervision.",
-    emphasis: "Personalized to You",
-  },
-];
-
 export function WhyChooseSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [revealed, setRevealed] = useState(false);
-  const [active, setActive] = useState<PillarId | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -50,7 +14,7 @@ export function WhyChooseSection() {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 },
+      { threshold: 0.15 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -61,186 +25,122 @@ export function WhyChooseSection() {
       ref={sectionRef}
       aria-labelledby="why-royal-heading"
       data-revealed={revealed ? "true" : "false"}
-      className="reveal-root relative overflow-hidden bg-background py-24 md:py-32"
+      className="reveal-root relative overflow-hidden bg-muted/40 py-20 md:py-24"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-aura" />
 
-      <div className="relative mx-auto grid w-full max-w-6xl grid-cols-1 gap-16 px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-20">
-        <div className="max-w-xl">
-          <p className="reveal reveal-1 text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+      <div className="relative mx-auto w-full max-w-[1280px] px-6">
+        <header className="mx-auto max-w-2xl text-center">
+          <p className="reveal reveal-1 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-primary">
             Why Royal Medical Center
           </p>
           <h2
             id="why-royal-heading"
-            className="reveal reveal-2 mt-6 text-balance font-display text-4xl leading-[1.08] tracking-tight text-foreground md:text-5xl"
+            className="reveal reveal-2 mt-4 text-balance font-display text-4xl leading-[1.05] tracking-tight text-foreground md:text-5xl"
           >
-            Healthcare Without the Guesswork.
+            Why Royal Medical Center?
           </h2>
-          <p className="reveal reveal-3 mt-6 text-lg leading-relaxed text-muted-foreground">
-            Personalized care, transparent pricing, and ongoing medical guidance designed
-            around your individual health needs.
+          <p className="reveal reveal-3 mt-3 text-sm uppercase tracking-[0.18em] text-muted-foreground">
+            Why Choose Us?
           </p>
-          <p className="reveal reveal-4 mt-10 hidden text-sm text-muted-foreground lg:block">
-            Transparent pricing. Personalized care. No surprises.
-          </p>
-        </div>
+        </header>
 
-        <TrustVisual active={active} onActiveChange={setActive} />
-      </div>
-
-      <div className="relative mx-auto mt-20 grid w-full max-w-6xl grid-cols-1 gap-6 px-6 md:grid-cols-3">
-        {PILLARS.map((pillar, i) => (
-          <article
-            key={pillar.id}
-            tabIndex={0}
-            aria-describedby={`pillar-desc-${pillar.id}`}
-            onMouseEnter={() => setActive(pillar.id)}
-            onMouseLeave={() => setActive(null)}
-            onFocus={() => setActive(pillar.id)}
-            onBlur={() => setActive(null)}
-            data-active={active === pillar.id ? "true" : "false"}
-            className={`reveal reveal-${5 + i} group rounded-3xl border border-border/70 bg-card/70 p-8 shadow-soft outline-none backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow focus-visible:-translate-y-1 focus-visible:border-primary/60 focus-visible:shadow-glow data-[active=true]:border-primary/40 data-[active=true]:shadow-glow`}
-          >
-            <div className="flex items-baseline justify-between">
-              <span className="text-xs font-semibold tracking-[0.28em] text-muted-foreground">
-                {pillar.index}
-              </span>
-              <span className="rounded-full border border-primary/25 bg-primary/5 px-3 py-1 text-[0.7rem] font-medium tracking-wide text-primary">
-                {pillar.emphasis}
-              </span>
-            </div>
-            <h3 className="mt-6 font-display text-xl text-foreground">{pillar.title}</h3>
-            <p
-              id={`pillar-desc-${pillar.id}`}
-              className="mt-3 text-sm leading-relaxed text-muted-foreground"
+        <div className="mt-12 grid grid-cols-1 gap-6 md:mt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-8">
+          {/* Panel 01 — Low Price Guarantee */}
+          <article className="reveal reveal-4 panel group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] border border-border/70 bg-card px-8 py-10 shadow-soft transition-all duration-500 hover:border-primary/45 hover:shadow-glow md:px-10">
+            <span
+              aria-hidden="true"
+              className="ghost-25 pointer-events-none absolute -right-6 -top-10 select-none font-display text-[11rem] leading-none text-primary/[0.06] md:text-[14rem]"
             >
-              {pillar.description}
-            </p>
-          </article>
-        ))}
-      </div>
+              25%
+            </span>
 
-      <div className="relative mx-auto mt-16 w-full max-w-6xl px-6">
-        <p className="reveal reveal-8 border-t border-border/70 pt-8 text-center text-xs uppercase tracking-[0.22em] text-muted-foreground">
-          Transparent Pricing <span className="text-primary/60">•</span> Personalized
-          Programs <span className="text-primary/60">•</span> Licensed Medical Supervision
-        </p>
+            <div className="relative">
+              <span className="text-xs font-semibold tracking-[0.3em] text-muted-foreground">
+                01
+              </span>
+
+              <div className="mt-6 flex items-center gap-6">
+                <div className="ring-25 relative shrink-0">
+                  <svg viewBox="0 0 120 120" className="h-28 w-28 md:h-32 md:w-32">
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="52"
+                      className="fill-none stroke-primary/15"
+                      strokeWidth="6"
+                    />
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="52"
+                      className="ring-progress fill-none stroke-primary"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      transform="rotate(-90 60 60)"
+                    />
+                  </svg>
+                  <span className="hero-25 absolute inset-0 flex items-center justify-center font-display text-3xl tracking-tight text-primary md:text-4xl">
+                    25%
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="font-display text-2xl leading-tight text-foreground md:text-3xl">
+                    Low Price Guarantee
+                  </h3>
+                  <p className="mt-3 max-w-xs text-base leading-relaxed text-muted-foreground">
+                    We’ll beat any competitor’s price by 25%.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="#products"
+              className="cta relative mt-10 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto sm:self-start"
+            >
+              Check Our Products
+              <span aria-hidden="true" className="cta-arrow">
+                →
+              </span>
+            </a>
+          </article>
+
+          {/* Panel 02 — No Hidden Fees */}
+          <article className="reveal reveal-5 panel group relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] border border-border/70 bg-background px-8 py-10 shadow-soft transition-all duration-500 hover:border-primary/45 hover:shadow-glow md:px-10">
+            <div aria-hidden="true" className="glass-art pointer-events-none absolute inset-0">
+              <div className="glass-grid absolute inset-0" />
+              <div className="glass-layer glass-layer-1" />
+              <div className="glass-layer glass-layer-2" />
+              <div className="glass-layer glass-layer-3" />
+            </div>
+
+            <div className="relative">
+              <span className="text-xs font-semibold tracking-[0.3em] text-muted-foreground">
+                02
+              </span>
+              <h3 className="mt-6 font-display text-2xl leading-tight text-foreground md:text-3xl">
+                No Hidden Fees
+              </h3>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
+                Our pricing is all-inclusive, covering everything you need, including lab
+                testing, medications, physicals and Dr consultations —no surprises, ever.
+              </p>
+            </div>
+
+            <a
+              href="#start"
+              className="cta relative mt-10 inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/40 bg-card px-6 py-3 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/5 sm:w-auto sm:self-start"
+            >
+              Start now
+              <span aria-hidden="true" className="cta-arrow">
+                →
+              </span>
+            </a>
+          </article>
+        </div>
       </div>
     </section>
-  );
-}
-
-function TrustVisual({
-  active,
-  onActiveChange,
-}: {
-  active: PillarId | null;
-  onActiveChange: (id: PillarId | null) => void;
-}) {
-  const nodes: { id: PillarId; label: string; sub: string; x: number; y: number }[] = [
-    { id: "price", label: "25%", sub: "Price Guarantee", x: 260, y: 78 },
-    { id: "fees", label: "$0", sub: "No Hidden Fees", x: 92, y: 340 },
-    { id: "care", label: "1:1", sub: "Personalized Care", x: 400, y: 352 },
-  ];
-
-  return (
-    <div className="reveal reveal-4 relative mx-auto w-full max-w-[520px]">
-      <svg
-        viewBox="0 0 520 460"
-        role="img"
-        aria-label="Royal Medical Center connects a 25 percent price guarantee, no hidden fees, and personalized care."
-        className="h-auto w-full overflow-visible"
-      >
-        <defs>
-          <radialGradient id="rmc-core" cx="50%" cy="40%" r="65%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.22" />
-            <stop offset="70%" stopColor="var(--color-primary)" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        <g aria-hidden="true">
-          {nodes.map((n) => (
-            <line
-              key={n.id}
-              className="trust-line"
-              data-active={active === n.id || active === "care" ? "true" : "false"}
-              x1="260"
-              y1="230"
-              x2={n.x}
-              y2={n.y}
-            />
-          ))}
-
-          <circle cx="260" cy="230" r="170" fill="url(#rmc-core)" />
-          <circle className="trust-halo" cx="260" cy="230" r="104" />
-          <circle
-            className="trust-core"
-            data-active={active === "care" ? "true" : "false"}
-            cx="260"
-            cy="230"
-            r="86"
-          />
-          <text
-            x="260"
-            y="222"
-            textAnchor="middle"
-            className="fill-foreground font-display"
-            style={{ fontSize: 15, letterSpacing: "0.14em" }}
-          >
-            ROYAL
-          </text>
-          <text
-            x="260"
-            y="244"
-            textAnchor="middle"
-            className="fill-foreground font-display"
-            style={{ fontSize: 15, letterSpacing: "0.14em" }}
-          >
-            MEDICAL
-          </text>
-          <text
-            x="260"
-            y="266"
-            textAnchor="middle"
-            className="fill-muted-foreground"
-            style={{ fontSize: 10, letterSpacing: "0.22em" }}
-          >
-            CENTER
-          </text>
-        </g>
-
-        {nodes.map((n, i) => (
-          <g
-            key={n.id}
-            className={`trust-node trust-node-${i + 1}`}
-            data-active={active === n.id ? "true" : "false"}
-            onMouseEnter={() => onActiveChange(n.id)}
-            onMouseLeave={() => onActiveChange(null)}
-            aria-hidden="true"
-          >
-            <circle className="trust-node-disc" cx={n.x} cy={n.y} r="52" />
-            <text
-              x={n.x}
-              y={n.y - 2}
-              textAnchor="middle"
-              className="trust-node-value fill-primary font-display"
-              style={{ fontSize: 22 }}
-            >
-              {n.label}
-            </text>
-            <text
-              x={n.x}
-              y={n.y + 18}
-              textAnchor="middle"
-              className="fill-muted-foreground"
-              style={{ fontSize: 8.5, letterSpacing: "0.12em" }}
-            >
-              {n.sub.toUpperCase()}
-            </text>
-          </g>
-        ))}
-      </svg>
-    </div>
   );
 }
